@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -39,8 +40,18 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody Product product){
+    public Result add(@RequestBody @Valid Product product){
         return this.productService.add(product);
     }
-    
+
+    @GetMapping("/getallbycategory")
+    public ResponseEntity<?> getAllByCategory(@RequestParam String categoryName){
+        DataResult<List<Product>> productDataResult = this.productService.getAllByCategory(categoryName);
+
+        if (productDataResult.isSuccess())
+            return new ResponseEntity<>(productDataResult, HttpStatus.OK);
+        else return new ResponseEntity<>(new ErrorResult(productDataResult.getMessage()),HttpStatus.BAD_REQUEST);
+    }
+
+
 }

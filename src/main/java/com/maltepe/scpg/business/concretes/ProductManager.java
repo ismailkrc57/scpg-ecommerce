@@ -49,5 +49,11 @@ public class ProductManager implements ProductService {
         return new SuccessResult(product.getProductName() + " added to database");
     }
 
+    @Override
+    public DataResult<List<Product>> getAllByCategory(String categoryName) {
+        List<Product> products = this.productDao.getAllByCategory_CategoryName(categoryName);
+        return new SuccessDataResult<>(products,"Products Listed by Category Name");
+    }
+
 
 }
